@@ -22,6 +22,7 @@ int main() {
     cin >> n;
     beauty.resize(n+1);
     edges.resize(n+1);
+    ans.resize(n+1);
     for(int i = 1;i <= n;i++) {
         cin >> beauty[i];
     }
@@ -33,6 +34,7 @@ int main() {
     }
     long long result = INT_MIN;
     dfs(1, 0);
+    //只需要遍历ans[i]就可以了不需要再以每个节点为根算出ans[i],
     for(int i = 1;i <= n;i++) result = max(result, ans[i]);
     cout << result;
     return 0;
