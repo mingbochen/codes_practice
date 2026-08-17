@@ -34,7 +34,7 @@ void dfs(int u, int color) {
     belong[color].push_back(u);
     vis[u] = true; //防止重复遍历
     for(auto [v, id] : edges[u]) {
-        if(is_bridge[v]) continue;//跳过桥边
+        if(is_bridge[id]) continue;//跳过桥边
         if(!vis[v]) dfs(v, color);
     }
 }
