@@ -4,6 +4,6 @@ using namespace std;
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    int color = 1^1;
-    cout << color;
+    string s = to_string(1) + "#" + to_string(2);
+    cout << s;
 }
