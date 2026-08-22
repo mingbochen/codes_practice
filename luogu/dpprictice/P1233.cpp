@@ -59,45 +59,80 @@
 //     return 0;
 // }
 
+// #include<bits/stdc++.h>
+// using namespace std;
+
+// struct stick{
+//     int l;
+//     int w;
+// };
+
+// //按照长度进行降序排序,对于长度相同的宽度进行降序排序
+// bool comp(const stick& a ,const stick& b) {
+//     if(a.l != b.l) {
+//         return a.l > b.l;
+//     }
+//     return a.w > b.w;
+// }
+// int main() {
+//     ios::sync_with_stdio(false);
+//     cin.tie(nullptr);
+//     int n;
+//     cin >> n;
+//     vector<stick>s(n);
+//     for(int i = 0;i < n;i++) cin >> s[i].l >> s[i].w;
+//     sort(s.begin(), s.end(), comp);
+//     //排过序之后长度就满足了条件,现在就是求在这个序列可以最少划分为多少个递减子序列
+//     //注意这里是递减子序列
+//     //如果几根木棍想被放在同一次准备中连续加工，那么它们的宽度必须满足：
+//     //前一个宽度 >= 后一个宽度
+//     //一个序列最少划分成多少个非递增子序列 = 它的最长严格递增子序列 LIS 的长度。
+//     vector<int>dp(n);//dp[i]表示以i结尾的最长严格递增子序列长度
+//     for(int i = 0;i < n;i++) dp[i] = 1;
+//     for(int i = 0;i < n;i++) {
+//         for(int j = i+1;j < n;j++) {
+//             if(s[j].w > s[i].w) dp[j] = max(dp[j], dp[i]+1);
+//         }
+//     }
+//     int ans = 0;
+//     for(int i = 0;i < n;i++) {
+//         ans = max(ans, dp[i]);
+//     }
+//     cout << ans;
+//     return 0;
+// }
+
 #include<bits/stdc++.h>
 using namespace std;
 
-struct stick{
-    int l;
-    int w;
-};
-
-//按照长度进行降序排序,对于长度相同的宽度进行降序排序
-bool comp(const stick& a ,const stick& b) {
-    if(a.l != b.l) {
-        return a.l > b.l;
+bool comp(const pair<int, int>& a, const pair<int, int>& b) {
+    if(a.first != b.first) {
+        return a.first > b.first;
     }
-    return a.w > b.w;
+    return a.second > b.second;
 }
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n;
     cin >> n;
-    vector<stick>s(n);
-    for(int i = 0;i < n;i++) cin >> s[i].l >> s[i].w;
-    sort(s.begin(), s.end(), comp);
-    //排过序之后长度就满足了条件,现在就是求在这个序列可以最少划分为多少个递减子序列
-    //注意这里是递减子序列
-    //如果几根木棍想被放在同一次准备中连续加工，那么它们的宽度必须满足：
-    //前一个宽度 >= 后一个宽度
-    //一个序列最少划分成多少个非递增子序列 = 它的最长严格递增子序列 LIS 的长度。
-    vector<int>dp(n);//dp[i]表示以i结尾的最长严格递增子序列长度
-    for(int i = 0;i < n;i++) dp[i] = 1;
+    vector<pair<int, int>>stick(n);
     for(int i = 0;i < n;i++) {
-        for(int j = i+1;j < n;j++) {
-            if(s[j].w > s[i].w) dp[j] = max(dp[j], dp[i]+1);
+        cin >> stick[i].first >> stick[i].second;
+    }
+    sort(stick.begin(), stick.end(), comp);
+    //sort之后l是肯定满足前者大于等于后者，现在就是求w最少划分成几个递减子序列
+    //也就是求w得最长严格递增子序列的长度
+    vector<int>tails;
+    for(int i = 0;i < n;i++) {
+        int x = stick[i].second;
+        auto it = lower_bound(tails.begin(), tails.end(), x);
+        if(it == tails.end()) {
+            tails.push_back(x);
+        } else {
+            *it = x;
         }
     }
-    int ans = 0;
-    for(int i = 0;i < n;i++) {
-        ans = max(ans, dp[i]);
-    }
-    cout << ans;
+    cout << tails.size();
     return 0;
 }
